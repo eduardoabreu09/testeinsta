@@ -34,7 +34,7 @@ export default class Post extends Component {
   exibeComentario(comentario){
     if(comentario.length>0){
       return(
-        <Text style={styles.likeText}>{comentario}</Text>
+        <Text>{comentario}</Text>
       
       );
     }
@@ -106,7 +106,7 @@ export default class Post extends Component {
                 {this.exibeLikes(foto.likers)}
                 <View style={styles.comentario}>
                   
-                  <Text>comentarios: </Text>  
+                  <Text style={styles.likeText}>comentarios: </Text>  
                   {this.exibeComentario(foto.comentario)}                
                   
 

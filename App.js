@@ -48,7 +48,7 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     
-    marginTop:10
+    
   
   }
   
