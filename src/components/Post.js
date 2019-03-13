@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View,Image, Dimensions,ScrollView,FlatList,TouchableOpacity} from 'react-native';
+import {Platform, StyleSheet, Text, View,Image, Dimensions,ScrollView, TextInput,FlatList,TouchableOpacity} from 'react-native';
 
 
 const width = Dimensions.get('screen').width
@@ -8,7 +8,8 @@ export default class Post extends Component {
  constructor(props){
    super(props)
    this.state={
-     foto:this.props.foto
+     foto:this.props.foto,
+     valorComentario: ''
 
      }
   }
@@ -29,6 +30,20 @@ export default class Post extends Component {
       return;
       
     }
+  }
+  exibeComentario(comentario){
+    if(comentario.length>0){
+      return(
+        <Text style={styles.likeText}>{comentario}</Text>
+      
+      );
+    }
+      
+    else{
+      return;
+      
+    }
+
   }
       
  like(){
@@ -51,6 +66,20 @@ export default class Post extends Component {
    }
    this.setState({foto:fotoAtualizada})
    
+ }
+ addComentario(){
+   let novocomentario = this.state.valorComentario
+   if(novocomentario=== ''){
+      return;
+   }
+
+   const fotoAtualizada = {
+    ...this.state.foto,
+    comentario:novocomentario
+  }
+  this.setState({foto:fotoAtualizada,valorComentario:''})
+  this.inputComentario.clear()
+  
  }
   
   render() {
@@ -75,6 +104,33 @@ export default class Post extends Component {
                   style={styles.fotoCoracao}/>
                 </TouchableOpacity>
                 {this.exibeLikes(foto.likers)}
+                <View style={styles.comentario}>
+                  
+                  <Text>comentarios: </Text>  
+                  {this.exibeComentario(foto.comentario)}                
+                  
+
+                
+                  
+                </View>
+                <View style={styles.novocomentario}>
+                  <TouchableOpacity onPress={this.addComentario.bind(this)}>
+                  <Image source={require('../../fotos/torre.jpg')}
+                  style={styles.icone}/>
+                  </TouchableOpacity>
+                 
+                  <TextInput style={styles.input}
+                  placeholder = "Adicione um comentario"
+                  ref={ input=> this.inputComentario=input}
+                  onChangeText ={texto=>this.setState({valorComentario:texto})}/>
+                  
+
+                    
+                    
+                  
+                </View>
+                
+                
                   
               </View>
                 
@@ -93,10 +149,30 @@ const styles = StyleSheet.create({
     marginTop:10
   
   },
+  novocomentario:{
+    alignItems:'center',
+    flexDirection:'row',
+    borderBottomWidth:1,
+    borderBottomColor:'grey'
+  },
+  icone:{
+    width:20,
+    height:20,
+    marginTop:10
+
+  },
   likeText:{
     fontWeight:'bold',
     color:'black'
   
+  },
+  input:{
+    height:40,
+
+  },
+  comentario:{
+    flexDirection: 'row'
+
   },
   coracao:{
     marginTop:15,

@@ -17,9 +17,9 @@ export default class App extends Component {
   
   render() {
     const fotos = [
-      {id:'1',usuario:'usuario1',likeada:false,likers:"5"},
-    {id:'2',usuario:'usuario2',likeada:false,likers:"1"},
-    {id:'3',usuario:'usuario3',likeada:false,likers:"0"}]
+      {id:'1',usuario:'usuario1',likeada:false,likers:"5",comentario:"OLAOLA"},
+    {id:'2',usuario:'usuario2',likeada:false,likers:"1",comentario: ""},
+    {id:'3',usuario:'usuario3',likeada:false,likers:"0",comentario: "oioi"}]
 
 
     return (
