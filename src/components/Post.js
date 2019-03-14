@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View,Image, Dimensions,ScrollView, TextInput,FlatList,TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View,Image, Dimensions,TextInput,TouchableOpacity} from 'react-native';
 
 
 const width = Dimensions.get('screen').width
@@ -32,9 +32,12 @@ export default class Post extends Component {
     }
   }
   exibeComentario(comentario){
-    if(comentario.length>0){
+    if(comentario!==''){
       return(
-        <Text>{comentario}</Text>
+        comentario.map((coments)=>(
+          <Text key={this.state.foto.id}>{coments}</Text>
+        ))
+        
       
       );
     }
@@ -43,6 +46,43 @@ export default class Post extends Component {
       return;
       
     }
+
+  }
+  exibeUsuario(usuario){
+    
+      return(
+      <View style={styles.fotoPerfil}> 
+      <Image source={require('../../fotos/fotosinais.jpg')}
+      style={styles.imagePerfil} />
+      <Text style={styles.userText}>{usuario}</Text>
+
+    </View>);
+
+    
+    
+    
+    
+  }
+  exibeImagem(idFoto){
+    if(idFoto==="1"){
+      return(
+      <Image source={require('../../fotos/torre.jpg')}
+      style={styles.image} />); 
+
+    }
+    if(idFoto==="2"){
+      return(
+      <Image source={require('../../fotos/louvre.jpg')}
+      style={styles.image} /> );
+
+    }
+    if(idFoto==="3"){
+      return(
+      <Image source={require('../../fotos/tajmahal.jpg')}
+      style={styles.image} /> );
+
+    }
+    
 
   }
       
@@ -68,14 +108,17 @@ export default class Post extends Component {
    
  }
  addComentario(){
-   let novocomentario = this.state.valorComentario
-   if(novocomentario=== ''){
+   let novaLista = []
+   if(this.state.valorComentario=== ''){
       return;
    }
+   novaLista = [
+     ...this.state.foto.comentario,this.state.valorComentario
+   ]
 
    const fotoAtualizada = {
     ...this.state.foto,
-    comentario:novocomentario
+    comentario:novaLista
   }
   this.setState({foto:fotoAtualizada,valorComentario:''})
   this.inputComentario.clear()
@@ -89,14 +132,12 @@ export default class Post extends Component {
     return (
       
           <View style={styles.container}>
-              <View style={styles.fotoPerfil}>
-                <Image source={require('../../fotos/torre.jpg')}
-                style={styles.imagePerfil} />
-                <Text style={styles.userText}>{foto.usuario}</Text>
-              </View>              
               
-              <Image source={require('../../fotos/torre.jpg')}
-              style={styles.image} /> 
+            {this.exibeUsuario(foto.usuario)} 
+                
+                           
+            {this.exibeImagem(foto.id)}
+            
 
               <View style={styles.coracao}>
                 <TouchableOpacity onPress= {this.like.bind(this)}>
@@ -114,15 +155,22 @@ export default class Post extends Component {
                   
                 </View>
                 <View style={styles.novocomentario}>
-                  <TouchableOpacity onPress={this.addComentario.bind(this)}>
-                  <Image source={require('../../fotos/torre.jpg')}
-                  style={styles.icone}/>
-                  </TouchableOpacity>
-                 
+                  
+                  
+                 <View style={{flex:1}}></View>
                   <TextInput style={styles.input}
                   placeholder = "Adicione um comentario"
                   ref={ input=> this.inputComentario=input}
                   onChangeText ={texto=>this.setState({valorComentario:texto})}/>
+                  <View style={styles.seta}>
+                    <TouchableOpacity onPress={this.addComentario.bind(this)}>
+                    <Image source={require('../../fotos/arrow.png')}
+                    style={styles.icone}/>
+                    </TouchableOpacity>
+
+                  </View>
+                  
+
                   
 
                     
@@ -146,10 +194,18 @@ export default class Post extends Component {
 const styles = StyleSheet.create({
   container: {
     
-    marginTop:10
+    
+    marginBottom: 20
   
   },
+  seta:{
+    
+   
+    
+    
+  },
   novocomentario:{
+    flex:1,
     alignItems:'center',
     flexDirection:'row',
     borderBottomWidth:1,
@@ -158,7 +214,7 @@ const styles = StyleSheet.create({
   icone:{
     width:20,
     height:20,
-    marginTop:10
+    
 
   },
   likeText:{
@@ -167,16 +223,19 @@ const styles = StyleSheet.create({
   
   },
   input:{
+    flex:1,
     height:40,
+    
 
   },
   comentario:{
-    flexDirection: 'row'
+    
 
   },
   coracao:{
     marginTop:15,
-    marginLeft:10
+    marginLeft:10,
+    marginRight:10
 
 
   },
